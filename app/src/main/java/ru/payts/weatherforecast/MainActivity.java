@@ -1,35 +1,71 @@
 package ru.payts.weatherforecast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.os.StrictMode;
+import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+//public class MainActivity extends AppCompatActivity {
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new
+                    StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
 
-        String instanceState;
-        if (savedInstanceState == null){
-            instanceState = "Первый запуск!";
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container, new WeatherFragment())
+                    .commit();
         }
-        else{
-            instanceState = "Повторный запуск!";
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.weather, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.change_city) {
+            showInputDialog();
         }
-        Toast.makeText(getApplicationContext(), instanceState + " - onCreate()", Toast.LENGTH_SHORT).show();
-        System.out.println(instanceState + " - onCreate()");
-        Button button = (Button) findViewById(R.id.button);         // Кнопка
-        button.setOnClickListener(new View.OnClickListener() {      // Обработка нажатий
+        return false;
+    }
+
+    private void showInputDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Change city");
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+        builder.setPositiveButton("Go", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(DialogInterface dialog, int which) {
+                changeCity(input.getText().toString());
             }
         });
+        builder.show();
+    }
+
+    public void changeCity(String city) {
+        WeatherFragment wf = (WeatherFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.container);
+        wf.changeCity(city);
+        new CityPreference(this).setCity(city);
     }
 
     @Override
@@ -40,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle saveInstanceState){
+    protected void onRestoreInstanceState(Bundle saveInstanceState) {
         super.onRestoreInstanceState(saveInstanceState);
         Toast.makeText(getApplicationContext(), "Повторный запуск!! - onRestoreInstanceState()", Toast.LENGTH_SHORT).show();
         System.out.println("Повторный запуск!! - onRestoreInstanceState()");
@@ -61,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle saveInstanceState){
+    protected void onSaveInstanceState(Bundle saveInstanceState) {
         super.onSaveInstanceState(saveInstanceState);
         Toast.makeText(getApplicationContext(), "onSaveInstanceState()", Toast.LENGTH_SHORT).show();
         System.out.println("onSaveInstanceState()");
@@ -88,3 +124,4 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("onDestroy()");
     }
 }
+
