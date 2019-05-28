@@ -5,5 +5,5 @@
     android:layout_height="match_parent"
     tools:context="ru.payts.weatherforecast.MainActivity"
     tools:ignore="MergeRootFrame"
-    android:background="#FF567733"
+    android:background="#FF559999"
     />
