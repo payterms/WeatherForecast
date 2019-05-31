@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Прогноз погоды</string>
+    <string name="change_city">Изменить город</string>
+    <string name="activity_second">Вторая активность</string>
+    <string name="place_not_found">Извините, данные не получены</string>
+    <string name="to_back">Назад</string>
+    <string name="to_second">Ко второй</string>
+    <string name="humidity">Влажность: </string>
+    <string name="pressure">Атм.давление: </string>
+    <string name="lastupdate">Обновлено: </string>
+    <string name="changecity">Изменить город</string>
+    <string name="gobutton">Вперед!</string>
+</resources>

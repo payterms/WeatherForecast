@@ -2,8 +2,10 @@ package ru.payts.weatherforecast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import static android.provider.Telephony.Mms.Part.TEXT;
@@ -17,7 +19,14 @@ public class SecondActivity extends AppCompatActivity {
         String text = getIntent().getExtras().getString(TEXT); // получить данные из Intent
         TextView textView = (TextView) findViewById(R.id.cityname);
         textView.setText(text); // Сохранить их в TextView
-        Toast.makeText(getApplicationContext(),"Second - onCreate()", Toast.LENGTH_SHORT).show();
+
+        Button button = (Button) findViewById(R.id.buttonBack);         // Кнопка
+        button.setOnClickListener(new View.OnClickListener() {  // Обработка нажатий
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override
@@ -56,13 +65,4 @@ public class SecondActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Second - onDestroy()", Toast.LENGTH_SHORT).show();
     }
 
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.buttonBack:
-                finish();
-                break;
-            default:
-                break;
-        }
-    }
 }

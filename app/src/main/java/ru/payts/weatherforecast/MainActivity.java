@@ -9,7 +9,9 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,12 +29,23 @@ public class MainActivity extends AppCompatActivity {
                     StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new WeatherFragment())
                     .commit();
         }
+        Button button = (Button) findViewById(R.id.button);         // Кнопка
+        if (button != null) {
+            button.setOnClickListener(new View.OnClickListener() {  // Обработка нажатий
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+                    intent.putExtra(TEXT, new CityPreference(MainActivity.this).getCity());
+                    startActivity(intent);
+                }
+            });
+        }
+
     }
 
     @Override
@@ -51,11 +64,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void showInputDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Change city");
+        builder.setTitle(getString(R.string.changecity));
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
-        builder.setPositiveButton("Go", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.gobutton), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 changeCity(input.getText().toString());
@@ -74,70 +87,49 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Toast.makeText(getApplicationContext(), "onStart()", Toast.LENGTH_SHORT).show();
         System.out.println("onStart()");
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle saveInstanceState) {
         super.onRestoreInstanceState(saveInstanceState);
-        Toast.makeText(getApplicationContext(), "Повторный запуск!! - onRestoreInstanceState()", Toast.LENGTH_SHORT).show();
         System.out.println("Повторный запуск!! - onRestoreInstanceState()");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Toast.makeText(getApplicationContext(), "onResume()", Toast.LENGTH_SHORT).show();
         System.out.println("onResume()");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Toast.makeText(getApplicationContext(), "onPause()", Toast.LENGTH_SHORT).show();
         System.out.println("onPause()");
     }
 
     @Override
     protected void onSaveInstanceState(Bundle saveInstanceState) {
         super.onSaveInstanceState(saveInstanceState);
-        Toast.makeText(getApplicationContext(), "onSaveInstanceState()", Toast.LENGTH_SHORT).show();
         System.out.println("onSaveInstanceState()");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Toast.makeText(getApplicationContext(), "onStop()", Toast.LENGTH_SHORT).show();
         System.out.println("onStop()");
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        Toast.makeText(getApplicationContext(), "onRestart()", Toast.LENGTH_SHORT).show();
         System.out.println("onRestart()");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Toast.makeText(getApplicationContext(), "onDestroy()", Toast.LENGTH_SHORT).show();
         System.out.println("onDestroy()");
-    }
-
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button:
-                Intent intent = new Intent(this, SecondActivity.class);
-                intent.putExtra(TEXT, new CityPreference(this).getCity());
-                startActivity(intent);
-
-                break;
-            default:
-                break;
-        }
     }
 
 }

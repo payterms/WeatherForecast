@@ -2,9 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Theme.AppCompat.Light.DarkActionBar.BlueStyle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FF559999"
     tools:context=".SecondActivity">
 
     <TextView
@@ -23,12 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/cityname"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:onClick="onClick"
-        android:text="@string/to_back"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="375dp" />
-
+        android:gravity="center_horizontal|center_vertical"
+        android:text="@string/to_back" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

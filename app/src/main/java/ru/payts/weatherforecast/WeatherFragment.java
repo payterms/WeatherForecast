@@ -89,15 +89,16 @@ public class WeatherFragment extends Fragment {
             JSONObject main = json.getJSONObject("main");
             detailsField.setText(
                     details.getString("description").toUpperCase(Locale.US) +
-                            "\n" + "Humidity: " + main.getString("humidity") + "%" +
-                            "\n" + "Pressure: " + main.getString("pressure") + " hPa");
+                            "\n" + getString(R.string.humidity) + main.getString("humidity") + "%" +
+                            "\n" + getString(R.string.pressure) + main.getString("pressure") + " hPa");
+
 
             currentTemperatureField.setText(
                     String.format("%.2f", main.getDouble("temp"))+ " ℃");
 
             DateFormat df = DateFormat.getDateTimeInstance();
             String updatedOn = df.format(new Date(json.getLong("dt")*1000));
-            updatedField.setText("Last update: " + updatedOn);
+            updatedField.setText(getString(R.string.lastupdate) + updatedOn);
 
             setWeatherIcon(details.getInt("id"),
                     json.getJSONObject("sys").getLong("sunrise") * 1000,
