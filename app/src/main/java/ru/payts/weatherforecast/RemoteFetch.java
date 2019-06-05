@@ -13,11 +13,11 @@ import android.util.Log;
 public class RemoteFetch {
 
     private static final String OPEN_WEATHER_MAP_API =
-            "https://api.openweathermap.org/data/2.5/weather?q=%s&units=metric&appid=fea82f030303d179dd680b5ade7deeb0";
+            "https://api.openweathermap.org/data/2.5/weather?q=%s&units=metric&appid=fea82f030303d179dd680b5ade7deeb0&lang=%s";
 
-    public static JSONObject getJSON(Context context, String city){
+    public static JSONObject getJSON(Context context, String city, String lang){
         try {
-            URL url = new URL(String.format(OPEN_WEATHER_MAP_API, city));
+            URL url = new URL(String.format(OPEN_WEATHER_MAP_API, city, lang));
             HttpURLConnection connection =
                     (HttpURLConnection)url.openConnection();
 

@@ -13,20 +13,21 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/to_second"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="6dp" />
-
     </LinearLayout>
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/citylist"
+        android:visibility="visible"
+        android:layout_gravity="center_horizontal">
+    </Spinner>
 
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="614dp"
         tools:ignore="MergeRootFrame"></FrameLayout>
 
 </LinearLayout>

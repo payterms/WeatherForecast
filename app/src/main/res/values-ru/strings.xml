@@ -11,4 +11,13 @@
     <string name="lastupdate">Обновлено: </string>
     <string name="changecity">Изменить город</string>
     <string name="gobutton">Вперед!</string>
+
+    <string-array name="citylist">
+        <item>Мурманск</item>
+        <item>Минск</item>
+        <item>Москва</item>
+        <item>Белгород</item>
+        <item>Архыз</item>
+    </string-array>
+
 </resources>

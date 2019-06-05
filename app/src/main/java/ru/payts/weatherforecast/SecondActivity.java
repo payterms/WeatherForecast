@@ -20,14 +20,7 @@ public class SecondActivity extends AppCompatActivity {
         TextView textView = (TextView) findViewById(R.id.cityname);
         textView.setText(text); // Сохранить их в TextView
 
-        Button button = (Button) findViewById(R.id.buttonBack);         // Кнопка
-        button.setOnClickListener(new View.OnClickListener() {  // Обработка нажатий
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-    }
+   }
 
     @Override
     protected void onStart() {
