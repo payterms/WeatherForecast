@@ -8,6 +8,7 @@
     <string name="to_second">Ко второй</string>
     <string name="humidity">Влажность: </string>
     <string name="pressure">Атм.давление: </string>
+    <string name="temperature">Температура: </string>
     <string name="lastupdate">Обновлено: </string>
     <string name="changecity">Изменить город</string>
     <string name="gobutton">Вперед!</string>

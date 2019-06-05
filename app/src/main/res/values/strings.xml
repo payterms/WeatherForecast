@@ -20,6 +20,7 @@
     <string name="to_second">Second</string>
     <string name="to_back">Back</string>
     <string name="humidity">Humidity: </string>
+    <string name="temperature">Temperature: </string>
     <string name="pressure">Pressure: </string>
     <string name="lastupdate">Last update: </string>
     <string name="changecity">Change city</string>

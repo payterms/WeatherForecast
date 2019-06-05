@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 currentCity = choose[selectedItemPosition];
                 String deviceLocale = Locale.getDefault().getLanguage();
                 changeCity(currentCity, deviceLocale);
+                //Picasso.with(context).load(iconUrl).into(imageView);
             }
             public void onNothingSelected(AdapterView<?> parent) {
                 currentCity = null;
