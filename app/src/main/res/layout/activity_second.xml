@@ -18,12 +18,4 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <Button
-        android:id="@+id/buttonBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/cityname"
-        android:gravity="center_horizontal|center_vertical"
-        android:text="@string/to_back" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

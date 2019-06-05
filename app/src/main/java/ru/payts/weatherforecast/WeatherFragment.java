@@ -7,6 +7,7 @@ import java.util.Locale;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -53,13 +54,13 @@ public class WeatherFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         weatherFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/weather.ttf");
-        updateWeatherData(new CityPreference(getActivity()).getCity());
+        updateWeatherData(new CityPreference(getActivity()).getCity(), Locale.getDefault().getLanguage());
     }
 
-    private void updateWeatherData(final String city){
+    private void updateWeatherData(final String city, final String lang){
         new Thread(){
             public void run(){
-                final JSONObject json = RemoteFetch.getJSON(getActivity(), city);
+                final JSONObject json = RemoteFetch.getJSON(getActivity(), city, lang);
                 if(json == null){
                     handler.post(new Runnable(){
                         public void run(){
@@ -81,14 +82,14 @@ public class WeatherFragment extends Fragment {
 
     private void renderWeather(JSONObject json){
         try {
-            cityField.setText(json.getString("name").toUpperCase(Locale.US) +
+            cityField.setText(json.getString("name").toUpperCase(Resources.getSystem().getConfiguration().locale) +
                     ", " +
                     json.getJSONObject("sys").getString("country"));
 
             JSONObject details = json.getJSONArray("weather").getJSONObject(0);
             JSONObject main = json.getJSONObject("main");
             detailsField.setText(
-                    details.getString("description").toUpperCase(Locale.US) +
+                    details.getString("description").toUpperCase(Resources.getSystem().getConfiguration().locale) +
                             "\n" + getString(R.string.humidity) + main.getString("humidity") + "%" +
                             "\n" + getString(R.string.pressure) + main.getString("pressure") + " hPa");
 
@@ -138,7 +139,7 @@ public class WeatherFragment extends Fragment {
         weatherIcon.setText(icon);
     }
 
-    public void changeCity(String city){
-        updateWeatherData(city);
+    public void changeCity(String city, String lang){
+        updateWeatherData(city, lang);
     }
 }

@@ -9,43 +9,69 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Locale;
 
 import static android.provider.Telephony.Mms.Part.TEXT;
 
 public class MainActivity extends AppCompatActivity {
 
+    ViewGroup root;
+    Spinner spinner;
+    String currentCity;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new
                     StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new WeatherFragment())
                     .commit();
         }
-        Button button = (Button) findViewById(R.id.button);         // Кнопка
-        if (button != null) {
-            button.setOnClickListener(new View.OnClickListener() {  // Обработка нажатий
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MainActivity.this, SecondActivity.class);
-                    intent.putExtra(TEXT, new CityPreference(MainActivity.this).getCity());
-                    startActivity(intent);
-                }
-            });
-        }
 
+        root = findViewById(R.id.container);
+        spinner = findViewById(R.id.spinner);
+
+
+        // Настраиваем адаптер
+        ArrayAdapter<?> adapter =
+                ArrayAdapter.createFromResource(this, R.array.citylist, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Вызываем адаптер
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent,
+                                       View itemSelected, int selectedItemPosition, long selectedId) {
+
+                String[] choose = getResources().getStringArray(R.array.citylist);
+                currentCity = choose[selectedItemPosition];
+                String deviceLocale = Locale.getDefault().getLanguage();
+                changeCity(currentCity, deviceLocale);
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+                currentCity = null;
+            }
+        });
     }
 
     @Override
@@ -71,16 +97,16 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton(getString(R.string.gobutton), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                changeCity(input.getText().toString());
+                changeCity(input.getText().toString(), Locale.getDefault().getLanguage());
             }
         });
         builder.show();
     }
 
-    public void changeCity(String city) {
+    public void changeCity(String city, String lang) {
         WeatherFragment wf = (WeatherFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.container);
-        wf.changeCity(city);
+        wf.changeCity(city, lang);
         new CityPreference(this).setCity(city);
     }
 

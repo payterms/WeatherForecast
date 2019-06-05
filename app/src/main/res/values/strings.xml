@@ -25,6 +25,14 @@
     <string name="changecity">Change city</string>
     <string name="gobutton">Go!</string>
 
+    <string-array name="citylist">
+        <item>Murmansk</item>
+        <item>Minsk</item>
+        <item>Moscow</item>
+        <item>Belgorod</item>
+        <item>Arkhyz</item>
+    </string-array>
+
 
 
 
