@@ -5,47 +5,66 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.Locale;
+import java.util.Objects;
 
 import static android.provider.Telephony.Mms.Part.TEXT;
 
 public class MainActivity extends AppCompatActivity {
+    private Toolbar toolbar;
+    private MenuListAdapter adapter = null;
+    private EditText searchEditText;
+
+    ViewGroup root;
+    String currentCity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        currentCity = new CityPreference(this).getCity();;
+        initViews();
+        initList();
+
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new
                     StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+
+        //setOnFloatingBtnClick();
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new WeatherFragment())
                     .commit();
         }
-        Button button = (Button) findViewById(R.id.button);         // Кнопка
-        if (button != null) {
-            button.setOnClickListener(new View.OnClickListener() {  // Обработка нажатий
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MainActivity.this, SecondActivity.class);
-                    intent.putExtra(TEXT, new CityPreference(MainActivity.this).getCity());
-                    startActivity(intent);
-                }
-            });
-        }
-
+        root = findViewById(R.id.container);
     }
 
     @Override
@@ -53,13 +72,77 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.weather, menu);
         return true;
     }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        handleMenuItemClick(item);
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.change_city) {
-            showInputDialog();
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getMenuInflater().inflate(R.menu.weather, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        handleMenuItemClick(item);
+        return super.onContextItemSelected(item);
+    }
+
+    private void initViews() {
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        //searchEditText = findViewById(R.id.searchEditText);
+    }
+
+    private void initList() {
+        ArrayList<String> data = new ArrayList<>();
+        data.add("Tula");
+        data.add("Orel");
+        adapter = new MenuListAdapter(data, this);
+        LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
+        //RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        //recyclerView.setLayoutManager(manager);
+        //recyclerView.setAdapter(adapter);
+    }
+
+
+    private void handleMenuItemClick(MenuItem item) {
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        switch (id) {
+            case R.id.menu_add: {
+                adapter.addItem(currentCity);
+                break;
+            }
+            case R.id.menu_search: {
+                showInputDialog();
+                break;
+            }
+            case R.id.menu_edit: {
+                showInputDialog();
+                adapter.editItem(currentCity);
+                break;
+            }
+            case R.id.menu_remove: {
+                adapter.removeElement();
+                break;
+            }
+            case R.id.menu_clear: {
+                adapter.clearList();
+                break;
+            }
+            default: {
+                if(id != R.id.menu_more) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.action_not_found),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        return false;
     }
 
     private void showInputDialog() {
@@ -71,16 +154,17 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton(getString(R.string.gobutton), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                changeCity(input.getText().toString());
+                changeCity(input.getText().toString(), Locale.getDefault().getLanguage());
             }
         });
         builder.show();
     }
 
-    public void changeCity(String city) {
+    public void changeCity(String city, String lang) {
         WeatherFragment wf = (WeatherFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.container);
-        wf.changeCity(city);
+        wf.changeCity(city, lang);
+        currentCity = city;
         new CityPreference(this).setCity(city);
     }
 

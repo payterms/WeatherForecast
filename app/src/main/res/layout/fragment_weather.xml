@@ -34,6 +34,15 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="70sp" />
 
+    <ImageView
+        android:id="@+id/weather_icon_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/updated_field"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        />
+
     <TextView
         android:id="@+id/current_temperature_field"
         android:layout_width="wrap_content"
@@ -50,5 +59,7 @@
         android:layout_below="@+id/weather_icon"
         android:layout_centerHorizontal="true"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+
 
 </RelativeLayout>

@@ -2,6 +2,7 @@ package ru.payts.weatherforecast;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.widget.AdapterView;
 
 public class CityPreference {
     SharedPreferences prefs;
