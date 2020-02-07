@@ -20,5 +20,13 @@
         <item>Белгород</item>
         <item>Архыз</item>
     </string-array>
+    <string name="add_city">Добавить город</string>
+    <string name="search_city">Найти город</string>
+    <string name="remove_city">Удалить город</string>
+    <string name="clear_all">Удалить все</string>
+    <string name="more">Еще</string>
+    <string name="mesure_items">Единицы</string>
+    <string name="settings">Настройки</string>
+    <string name="action_not_found">Not Found</string>
 
 </resources>
